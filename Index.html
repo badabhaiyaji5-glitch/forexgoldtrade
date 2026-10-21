@@ -1,0 +1,1312 @@
+# forexgoldtrade
+Forex Gold Trade With Advance Ai Bot
+```html
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forex Gold Trade - Institutional Trading & Master Admin Console</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            500: '#00e676',
+                            600: '#00c853',
+                            700: '#00a142',
+                            bg: '#12161f',
+                            card: '#1a202c',
+                            border: '#2d3748',
+                            hover: '#242c3d'
+                        },
+                        gold: {
+                            400: '#f6d365',
+                            500: '#d4af37',
+                            600: '#aa8c2c'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & Lucide Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #12161f;
+            color: #e2e8f0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #12161f; }
+        ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4a5568; }
+        .sparkline-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 3s ease-in-out forwards infinite;
+        }
+        @keyframes dash { to { stroke-dashoffset: 0; } }
+    </style>
+</head>
+<body class="bg-brand-bg text-gray-100 min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+    <!-- GLOBAL ANNOUNCEMENT BANNER -->
+    <div id="global-announcement-bar" class="bg-gradient-to-r from-amber-600/30 via-gold-500/20 to-amber-600/30 border-b border-gold-500/30 px-4 py-1.5 text-xs text-gold-400 font-medium text-center flex items-center justify-center gap-2">
+        <i data-lucide="megaphone" class="w-3.5 h-3.5"></i>
+        <span id="announcement-text">Welcome to Forex Gold Trade: High Precision Algo Trading & Institutional Forex Exchange.</span>
+    </div>
+
+    <!-- TOP TICKER BAR -->
+    <div class="bg-brand-card border-b border-brand-border py-2 px-4 text-xs overflow-x-auto whitespace-nowrap flex items-center justify-between text-gray-400">
+        <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-2">
+                <span class="font-bold text-gold-400">🥇 XAU/USD (Gold)</span>
+                <span id="ticker-gold-price" class="text-brand-500 font-semibold">$2,734.50</span>
+                <span class="text-brand-500 text-[10px] bg-brand-500/10 px-1 rounded">+1.42%</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="font-bold text-gray-200">EUR/USD</span>
+                <span class="text-red-400 font-semibold">1.0824</span>
+                <span class="text-red-400 text-[10px] bg-red-950/50 px-1 rounded">-0.18%</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="font-bold text-gray-200">GBP/USD</span>
+                <span class="text-brand-500 font-semibold">1.2980</span>
+                <span class="text-brand-500 text-[10px] bg-brand-500/10 px-1 rounded">+0.35%</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="font-bold text-gray-200">BTC/USDT</span>
+                <span class="text-brand-500 font-semibold">$97,391.00</span>
+                <span class="text-brand-500 text-[10px] bg-brand-500/10 px-1 rounded">+2.85%</span>
+            </div>
+        </div>
+
+        <!-- Master View Toggle Button -->
+        <div class="flex items-center space-x-2 pl-4">
+            <button onclick="toggleMasterMode()" id="master-toggle-btn" class="bg-gold-500 text-black px-3 py-1 rounded-lg text-xs font-extrabold hover:bg-gold-400 transition flex items-center gap-1.5 shadow-md shadow-gold-500/20">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+                <span id="master-mode-label">Switch to Master Admin Panel</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN NAVBAR -->
+    <header class="sticky top-0 z-40 bg-brand-bg/90 backdrop-blur-md border-b border-brand-border px-4 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('dashboard')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-gold-500 via-amber-400 to-brand-500 p-0.5 flex items-center justify-center shadow-lg shadow-gold-500/20">
+                    <div class="w-full h-full bg-brand-bg rounded-[10px] flex items-center justify-center">
+                        <i data-lucide="coins" class="w-6 h-6 text-gold-400"></i>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="font-black text-lg tracking-tight leading-none text-white">
+                        Forex Gold <span class="text-gold-400">Trade</span>
+                    </h1>
+                    <span id="active-user-display" class="text-[10px] text-gray-400 tracking-wider font-medium uppercase">Logged in: Trader</span>
+                </div>
+            </div>
+
+            <!-- Navbar Quick Menu Actions -->
+            <div class="hidden md:flex items-center space-x-1 text-xs font-semibold text-gray-300">
+                <button onclick="switchView('dashboard')" class="px-3 py-2 rounded-lg hover:bg-brand-hover hover:text-white transition">Dashboard</button>
+                <button onclick="switchView('trade')" class="px-3 py-2 rounded-lg hover:bg-brand-hover hover:text-white transition">Gold Terminal</button>
+                <button onclick="switchView('wallet')" class="px-3 py-2 rounded-lg hover:bg-brand-hover hover:text-white transition">Wallet & Deposit</button>
+                <button onclick="switchView('bots')" class="px-3 py-2 rounded-lg hover:bg-brand-hover hover:text-white transition">Algo Bots</button>
+                <button onclick="switchView('kyc')" class="px-3 py-2 rounded-lg hover:bg-brand-hover hover:text-white transition">KYC Check</button>
+                <button onclick="switchView('admin')" class="px-3 py-2 rounded-lg bg-red-950/50 text-red-400 border border-red-500/30 hover:bg-red-900/50 transition flex items-center gap-1 font-bold">
+                    <i data-lucide="sliders" class="w-3.5 h-3.5"></i> Admin Control
+                </button>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button onclick="switchView('wallet')" class="p-2 rounded-lg bg-brand-card border border-brand-border text-gold-400 hover:border-gold-500 transition flex items-center gap-1 text-xs font-bold">
+                    <i data-lucide="wallet" class="w-4 h-4"></i>
+                    <span id="nav-user-balance" class="hidden sm:inline">$0.00</span>
+                </button>
+                <button onclick="toggleMenu()" class="p-2 rounded-lg bg-brand-500 text-black font-bold hover:bg-brand-600 transition">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- SIDE DRAWER NAVIGATION -->
+    <div id="side-drawer" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden transition-opacity duration-300">
+        <div class="fixed right-0 top-0 bottom-0 w-80 bg-brand-card border-l border-brand-border p-6 flex flex-col justify-between overflow-y-auto">
+            <div>
+                <div class="flex items-center justify-between pb-6 border-b border-brand-border mb-6">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="menu" class="text-gold-400"></i> Platform Menu
+                    </h2>
+                    <button onclick="toggleMenu()" class="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-brand-hover">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <nav class="space-y-2">
+                    <button onclick="navClick('dashboard')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-brand-hover text-white font-medium text-xs">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4 text-gold-400"></i>
+                        <span>User Dashboard</span>
+                    </button>
+                    <button onclick="navClick('admin')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-red-950/40 text-red-400 border border-red-500/30 font-bold text-xs hover:bg-red-900/50 transition">
+                        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                        <span>Master Admin Console</span>
+                    </button>
+                    <button onclick="navClick('trade')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-brand-hover hover:text-white transition text-xs font-medium">
+                        <i data-lucide="line-chart" class="w-4 h-4 text-brand-500"></i>
+                        <span>Trade XAU/USD Gold</span>
+                    </button>
+                    <button onclick="navClick('wallet')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-brand-hover hover:text-white transition text-xs font-medium">
+                        <i data-lucide="wallet" class="w-4 h-4 text-emerald-400"></i>
+                        <span>Wallet Deposit & Withdraw</span>
+                    </button>
+                    <button onclick="navClick('bots')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-brand-hover hover:text-white transition text-xs font-medium">
+                        <i data-lucide="bot" class="w-4 h-4 text-blue-400"></i>
+                        <span>Algorithmic Bots</span>
+                    </button>
+                    <button onclick="navClick('kyc')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-brand-hover hover:text-white transition text-xs font-medium">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
+                        <span>KYC Verification</span>
+                    </button>
+                    <button onclick="navClick('auth')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white transition text-xs font-medium">
+                        <i data-lucide="user" class="w-4 h-4"></i>
+                        <span>Sign In / Register</span>
+                    </button>
+                </nav>
+
+                <div class="mt-8 p-4 rounded-xl bg-brand-bg border border-brand-border">
+                    <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
+                        <span>Active Account Balance</span>
+                        <i data-lucide="dollar-sign" class="text-gold-400 w-4 h-4"></i>
+                    </div>
+                    <div id="drawer-balance-display" class="text-xl font-bold text-gold-400">$0.00</div>
+                    <div class="text-[10px] text-gray-500 mt-1">Controlled by Master Admin</div>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-brand-border">
+                <button onclick="resetDataToDefault()" class="w-full text-center text-xs text-gray-500 hover:text-red-400 py-2">
+                    Reset System State to Default
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6">
+
+        <!-- ================= VIEW 1: USER DASHBOARD ================= -->
+        <section id="view-dashboard" class="space-y-6">
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-brand-card via-brand-hover to-brand-card p-6 rounded-2xl border border-brand-border relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+                            Welcome, <span id="dash-user-name" class="text-gold-400">Trader</span>
+                        </h2>
+                        <span id="dash-kyc-badge" class="px-2 py-0.5 text-[10px] font-bold rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">KYC Pending</span>
+                    </div>
+                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Institutional Forex & Gold Trading Dashboard. Real-time balance synced with Admin console.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="switchView('admin')" class="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2 text-xs">
+                        <i data-lucide="sliders" class="w-4 h-4"></i> Open Admin Panel
+                    </button>
+                    <button onclick="switchView('trade')" class="bg-gold-500 hover:bg-gold-400 text-black font-extrabold px-5 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2 text-xs">
+                        <i data-lucide="line-chart" class="w-4 h-4"></i> Trade Gold
+                    </button>
+                </div>
+            </div>
+
+            <!-- Key Wallet Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                
+                <div class="bg-brand-card border border-gold-500/40 p-5 rounded-2xl relative overflow-hidden">
+                    <div class="flex items-center justify-between text-gray-400 mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider">Total Balance</span>
+                        <div class="p-2 rounded-lg bg-gold-500/10 text-gold-400">
+                            <i data-lucide="wallet" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                    <div id="dash-total-balance" class="text-2xl font-black text-gold-400 tracking-tight">$0.00</div>
+                    <div class="text-[11px] text-gray-400 mt-2 flex items-center gap-1 font-medium">
+                        <i data-lucide="refresh-cw" class="w-3 h-3 text-brand-500 animate-spin"></i> Live Admin Controlled
+                    </div>
+                </div>
+
+                <div class="bg-brand-card border border-brand-border p-5 rounded-2xl">
+                    <div class="flex items-center justify-between text-gray-400 mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider">Gold Holdings (XAU)</span>
+                        <div class="p-2 rounded-lg bg-amber-500/10 text-amber-400">
+                            <i data-lucide="coins" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                    <div id="dash-gold-balance" class="text-2xl font-bold text-white tracking-tight">0.00 Oz</div>
+                    <div class="text-xs text-gray-400 mt-2">Valued at current XAU rate</div>
+                </div>
+
+                <div class="bg-brand-card border border-brand-border p-5 rounded-2xl">
+                    <div class="flex items-center justify-between text-gray-400 mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider">Total Profit / Loss</span>
+                        <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">
+                            <i data-lucide="trending-up" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                    <div id="dash-profit-loss" class="text-2xl font-bold text-emerald-400 tracking-tight">+$0.00</div>
+                    <div class="text-xs text-brand-500 mt-2 font-medium">Real-time Algo Performance</div>
+                </div>
+
+                <div class="bg-brand-card border border-brand-border p-5 rounded-2xl">
+                    <div class="flex items-center justify-between text-gray-400 mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider">Trading Bot Status</span>
+                        <div class="p-2 rounded-lg bg-blue-500/10 text-blue-400">
+                            <i data-lucide="bot" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                    <div id="dash-bot-status" class="text-xl font-bold text-white tracking-tight">ACTIVE (88% Win)</div>
+                    <div class="text-xs text-gray-400 mt-2">Gold Algo Engine v3</div>
+                </div>
+            </div>
+
+            <!-- Market Overview Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <div class="bg-brand-card border border-brand-border rounded-2xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-500/40 flex items-center justify-center font-bold text-gold-400 text-sm">
+                                🥇
+                            </div>
+                            <div>
+                                <div class="font-bold text-white text-base">XAU/USD (Gold Spot)</div>
+                                <div class="text-xs text-gray-400">Forex Commodity Market</div>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-brand-500/10 text-brand-500 border border-brand-500/20">+1.42%</span>
+                    </div>
+
+                    <div class="h-16 w-full my-3">
+                        <svg class="w-full h-full overflow-visible" viewBox="0 0 300 50">
+                            <path d="M0,40 Q30,10 60,30 T120,20 T180,35 T240,15 T300,5" fill="none" stroke="#00e676" stroke-width="2.5" class="sparkline-path"/>
+                        </svg>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-2 pt-3 border-t border-brand-border/60 text-xs">
+                        <div>
+                            <span class="text-gray-400">Current Spot:</span>
+                            <span class="font-bold text-white ml-1">$2,734.50</span>
+                        </div>
+                        <button onclick="switchView('trade')" class="text-gold-400 font-bold hover:underline">Trade Terminal &rarr;</button>
+                    </div>
+                </div>
+
+                <div class="bg-brand-card border border-brand-border rounded-2xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center font-bold text-blue-400 text-sm">
+                                💶
+                            </div>
+                            <div>
+                                <div class="font-bold text-white text-base">EUR/USD</div>
+                                <div class="text-xs text-gray-400">Major Forex Pair</div>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20">-0.18%</span>
+                    </div>
+
+                    <div class="h-16 w-full my-3">
+                        <svg class="w-full h-full overflow-visible" viewBox="0 0 300 50">
+                            <path d="M0,15 Q50,45 100,25 T200,40 T300,35" fill="none" stroke="#ef4444" stroke-width="2.5" class="sparkline-path"/>
+                        </svg>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-2 pt-3 border-t border-brand-border/60 text-xs">
+                        <div>
+                            <span class="text-gray-400">Rate:</span>
+                            <span class="font-bold text-white ml-1">1.0824</span>
+                        </div>
+                        <button onclick="switchView('trade')" class="text-gold-400 font-bold hover:underline">Trade Terminal &rarr;</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= VIEW 2: MASTER ADMIN CONTROL PANEL ================= -->
+        <section id="view-admin" class="space-y-6 hidden">
+            
+            <div class="bg-gradient-to-r from-red-950/80 via-brand-card to-red-950/80 border border-red-500/40 p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center space-x-3">
+                    <div class="p-3 bg-red-500/20 text-red-400 rounded-xl">
+                        <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-black text-white uppercase tracking-wide">Master Admin Control Panel</h2>
+                        <p class="text-xs text-gray-300">You have full admin rights to modify balances, approve KYC, override bot rules, and change system settings.</p>
+                    </div>
+                </div>
+                <button onclick="switchView('dashboard')" class="bg-brand-hover border border-brand-border text-gray-200 px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-bg transition">
+                    View Frontend User Platform &rarr;
+                </button>
+            </div>
+
+            <!-- Admin Balance & Portfolio Editor -->
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-6 shadow-xl">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <i data-lucide="edit-3" class="text-gold-400"></i> Instant Balance Override & Direct Edit
+                </h3>
+
+                <form onsubmit="handleAdminBalanceUpdate(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Target User Account</label>
+                        <select id="admin-user-select" onchange="loadSelectedUserToAdminForm()" class="w-full bg-brand-bg border border-brand-border rounded-xl px-3 py-2.5 text-white text-xs focus:outline-none focus:border-gold-500">
+                            <!-- JS Populated -->
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Wallet Total Balance ($)</label>
+                        <input type="number" step="0.01" id="admin-input-balance" required class="w-full bg-brand-bg border border-brand-border rounded-xl px-3 py-2.5 text-white text-xs focus:outline-none focus:border-gold-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Gold Holdings (Oz)</label>
+                        <input type="number" step="0.01" id="admin-input-gold" required class="w-full bg-brand-bg border border-brand-border rounded-xl px-3 py-2.5 text-white text-xs focus:outline-none focus:border-gold-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Total Profit / Loss ($)</label>
+                        <input type="number" step="0.01" id="admin-input-profit" required class="w-full bg-brand-bg border border-brand-border rounded-xl px-3 py-2.5 text-white text-xs focus:outline-none focus:border-gold-500">
+                    </div>
+
+                    <div class="sm:col-span-2 lg:col-span-4 flex flex-wrap justify-end gap-3 pt-2 border-t border-brand-border/60">
+                        <button type="button" onclick="quickAddBalance(5000)" class="bg-brand-hover border border-brand-border text-brand-500 hover:bg-brand-500/10 font-bold px-4 py-2 rounded-xl text-xs transition">
+                            +$5,000 Deposit
+                        </button>
+                        <button type="button" onclick="quickAddBalance(50000)" class="bg-brand-hover border border-brand-border text-gold-400 hover:bg-gold-500/10 font-bold px-4 py-2 rounded-xl text-xs transition">
+                            +$50,000 VIP Deposit
+                        </button>
+                        <button type="submit" class="bg-gold-500 hover:bg-gold-400 text-black font-extrabold px-6 py-2.5 rounded-xl text-xs shadow-lg shadow-gold-500/20 transition flex items-center gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i> Apply Live Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Registered Users Management Table -->
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="users" class="text-gold-400"></i> Registered User Accounts
+                    </h3>
+                    <button onclick="addNewUserPrompt()" class="bg-brand-bg border border-brand-border hover:border-gold-500 text-xs font-bold text-white px-3 py-1.5 rounded-xl transition">
+                        + Create User Account
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-gray-300">
+                        <thead class="bg-brand-bg text-gray-400 uppercase font-semibold border-b border-brand-border">
+                            <tr>
+                                <th class="p-3">User & Email</th>
+                                <th class="p-3">Balance</th>
+                                <th class="p-3">Gold (Oz)</th>
+                                <th class="p-3">Profit/Loss</th>
+                                <th class="p-3">KYC Status</th>
+                                <th class="p-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-users-tbody" class="divide-y divide-brand-border">
+                            <!-- Dynamic Table Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Admin Bot Controls & KYC Approvals -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="bg-brand-card border border-brand-border rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="cpu" class="text-amber-400"></i> Master Bot Signal & Win Ratio Override
+                    </h3>
+                    <p class="text-xs text-gray-400 mb-4">Set automated win rates and force signals for user algorithm bots.</p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 mb-1">Global Gold Signal Injection</label>
+                            <select id="admin-signal-select" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs">
+                                <option value="BULLISH_STRONG">STRONG BUY (Gold Target $2,800)</option>
+                                <option value="BEARISH_STRONG">STRONG SELL (Gold Target $2,650)</option>
+                                <option value="NEUTRAL">NEUTRAL / CONSOLIDATION</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 mb-1">Target Algo Win Rate (%)</label>
+                            <input type="number" id="admin-winrate-input" value="88" min="0" max="100" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs">
+                        </div>
+
+                        <button onclick="updateBotSignals()" class="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold py-2.5 rounded-xl text-xs transition">
+                            Inject Bot Parameters
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-brand-card border border-brand-border rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="shield-check" class="text-brand-500"></i> KYC Approval & Document System
+                    </h3>
+                    <p class="text-xs text-gray-400 mb-4">Review identity document verification requests.</p>
+
+                    <div id="admin-kyc-queue" class="space-y-3">
+                        <!-- JS Loaded -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Global Platform Settings & Wallet Config -->
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                    <i data-lucide="settings" class="text-gray-300"></i> Global Platform Settings & Wallet Addresses
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Deposit USDT (TRC20) Address</label>
+                        <input type="text" id="admin-usdt-addr" value="TX9qZ8kP1Mv9L0s7Y2R5wK3E8fG1N4jH6x" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Deposit Bitcoin (BTC) Address</label>
+                        <input type="text" id="admin-btc-addr" value="1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs font-mono">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Top Announcement Banner Text</label>
+                        <input type="text" id="admin-announcement-input" value="Welcome to Forex Gold Trade: High Precision Algo Trading & Institutional Forex Exchange." class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs">
+                    </div>
+                </div>
+
+                <div class="mt-4 flex justify-end">
+                    <button onclick="savePlatformSettings()" class="bg-brand-500 hover:bg-brand-600 text-black font-bold px-5 py-2 rounded-xl text-xs transition">
+                        Save Platform Configuration
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= VIEW 3: TRADING TERMINAL ================= -->
+        <section id="view-trade" class="space-y-6 hidden">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">XAU/USD Gold Terminal</h2>
+                    <p class="text-xs text-gray-400">Institutional Spot Trading Engine</p>
+                </div>
+                <span class="text-xs text-brand-500 font-mono flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-brand-500 animate-ping"></span> Live Market
+                </span>
+            </div>
+
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-brand-border">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">🥇 Spot Gold (XAU/USD)</h3>
+                        <div class="text-2xl font-extrabold text-gold-400 mt-1">$2,734.50</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="executeTrade('BUY')" class="bg-brand-500 hover:bg-brand-600 text-black font-extrabold px-6 py-2.5 rounded-xl text-xs transition">
+                            BUY / LONG GOLD
+                        </button>
+                        <button onclick="executeTrade('SELL')" class="bg-red-600 hover:bg-red-700 text-white font-extrabold px-6 py-2.5 rounded-xl text-xs transition">
+                            SELL / SHORT GOLD
+                        </button>
+                    </div>
+                </div>
+
+                <div class="h-64 my-6 bg-brand-bg rounded-xl border border-brand-border p-4 flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex justify-between text-xs text-gray-500 font-mono">
+                        <span>High: $2,745.00</span>
+                        <span>Low: $2,720.00</span>
+                    </div>
+                    <svg class="w-full h-36" viewBox="0 0 500 100" preserveAspectRatio="none">
+                        <path d="M0,80 Q50,20 100,50 T200,30 T300,70 T400,20 T500,10" fill="none" stroke="#d4af37" stroke-width="3" />
+                    </svg>
+                    <div class="flex justify-between text-xs text-gray-500 font-mono">
+                        <span>10:00 AM</span><span>12:00 PM</span><span>02:00 PM</span><span>04:00 PM</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 4: USER WALLET & DEPOSIT ================= -->
+        <section id="view-wallet" class="space-y-6 hidden">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">User Wallet & Funds</h2>
+                    <p class="text-xs text-gray-400">Manage account deposits and withdrawal requests</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Deposit Form -->
+                <div class="bg-brand-card border border-brand-border rounded-2xl p-6 space-y-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="arrow-down-left" class="text-brand-500"></i> Deposit Funds
+                    </h3>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Select Payment Asset</label>
+                        <select id="deposit-asset" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs">
+                            <option value="USDT">USDT (TRC20)</option>
+                            <option value="BTC">Bitcoin (BTC)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Deposit Amount ($)</label>
+                        <input type="number" id="deposit-amount" placeholder="1000" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs">
+                    </div>
+
+                    <div class="p-3 bg-brand-bg rounded-xl border border-brand-border text-xs space-y-1">
+                        <span class="text-gray-400 block">Deposit Wallet Address:</span>
+                        <div id="wallet-dep-addr" class="font-mono text-gold-400 select-all break-all">TX9qZ8kP1Mv9L0s7Y2R5wK3E8fG1N4jH6x</div>
+                    </div>
+
+                    <button onclick="submitUserDeposit()" class="w-full bg-brand-500 hover:bg-brand-600 text-black font-extrabold py-3 rounded-xl text-xs transition">
+                        Confirm Deposit
+                    </button>
+                </div>
+
+                <!-- Withdrawal Form -->
+                <div class="bg-brand-card border border-brand-border rounded-2xl p-6 space-y-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="arrow-up-right" class="text-red-400"></i> Withdraw Funds
+                    </h3>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Withdrawal Amount ($)</label>
+                        <input type="number" id="withdraw-amount" placeholder="500" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Destination Address</label>
+                        <input type="text" id="withdraw-address" placeholder="Your TRC20 or BTC address" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs font-mono">
+                    </div>
+
+                    <button onclick="submitUserWithdrawal()" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-3 rounded-xl text-xs transition">
+                        Submit Withdrawal Request
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Transaction History Log -->
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-white mb-4">Recent Transaction Logs</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-gray-300">
+                        <thead class="bg-brand-bg text-gray-400 uppercase font-semibold border-b border-brand-border">
+                            <tr>
+                                <th class="p-3">Type</th>
+                                <th class="p-3">Amount</th>
+                                <th class="p-3">Asset</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tx-history-tbody" class="divide-y divide-brand-border">
+                            <!-- JS Populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 5: ALGORITHMIC TRADING BOTS ================= -->
+        <section id="view-bots" class="space-y-6 hidden">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Trading Bot Console</h2>
+                    <p class="text-xs text-gray-400">Configure automated algorithmic trading strategies</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Bot Config Form -->
+                <div class="bg-brand-card border border-brand-border rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="settings" class="text-gold-400"></i> Bot Parameters
+                    </h3>
+
+                    <form onsubmit="handleBotConfig(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Trade Amount ($)</label>
+                            <input type="number" id="bot-amount" value="500" min="1" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Execution Interval</label>
+                            <select id="bot-interval" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs">
+                                <option value="1m">1 Minute</option>
+                                <option value="5m">5 Minutes</option>
+                                <option value="15m">15 Minutes</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Trading Asset</label>
+                            <select id="bot-asset" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs">
+                                <option value="XAU/USD">🥇 XAU/USD (Gold Spot)</option>
+                                <option value="EUR/USD">💶 EUR/USD Forex</option>
+                                <option value="BTC/USDT">₿ BTC/USDT</option>
+                            </select>
+                        </div>
+
+                        <div class="pt-2 flex gap-3">
+                            <button type="submit" class="flex-1 bg-brand-500 hover:bg-brand-600 text-black font-extrabold py-2.5 rounded-xl text-xs transition">
+                                Start Bot
+                            </button>
+                            <button type="button" onclick="stopUserBot()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-extrabold py-2.5 rounded-xl text-xs transition">
+                                Stop Bot
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Passkey Activation -->
+                <div class="bg-brand-card border border-brand-border rounded-2xl p-6 space-y-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="key" class="text-amber-400"></i> Activate Bot Passkey
+                    </h3>
+                    <p class="text-xs text-gray-400">Enter developer passkey to unlock VIP Pro Bot models.</p>
+
+                    <input type="text" id="bot-passkey-input" placeholder="Enter VIP Passkey" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-white text-xs font-mono">
+                    <button onclick="submitPasskey()" class="w-full bg-gold-500 hover:bg-gold-400 text-black font-extrabold py-2.5 rounded-xl text-xs transition">
+                        Submit Passkey
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bot Live Execution Logs -->
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-white mb-3">Bot Execution Logs</h3>
+                <div id="bot-log-terminal" class="bg-brand-bg border border-brand-border p-4 rounded-xl font-mono text-xs text-brand-500 space-y-1 h-36 overflow-y-auto">
+                    <div>[INFO] Bot initialized. Listening to market websocket...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 6: KYC IDENTITY VERIFICATION ================= -->
+        <section id="view-kyc" class="max-w-xl mx-auto space-y-6 hidden">
+            <div class="text-center space-y-2">
+                <div class="w-16 h-16 rounded-full bg-gold-500/10 border border-gold-500/30 flex items-center justify-center mx-auto text-gold-400">
+                    <i data-lucide="shield-check" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white">Identity Verification (KYC)</h2>
+                <p class="text-xs text-gray-400">Current Verification Status: <span id="user-kyc-status-text" class="font-bold text-amber-400">Pending</span></p>
+            </div>
+
+            <div class="bg-brand-card border border-brand-border p-6 rounded-2xl space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Full Legal Name</label>
+                    <input type="text" id="kyc-full-name" placeholder="John Doe" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-xs text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Document Type</label>
+                    <select id="kyc-doc-type" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-xs text-white">
+                        <option value="Passport">Passport</option>
+                        <option value="National ID Card">National ID Card</option>
+                        <option value="Driver License">Driver License</option>
+                    </select>
+                </div>
+
+                <button onclick="submitUserKYC()" class="w-full bg-gold-500 hover:bg-gold-400 text-black font-extrabold py-3 rounded-xl text-xs transition">
+                    Submit Identification Documents
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 7: AUTH SIGN IN / SIGN UP ================= -->
+        <section id="view-auth" class="max-w-md mx-auto space-y-6 hidden">
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6">
+                
+                <div class="flex justify-center space-x-4 border-b border-brand-border pb-4">
+                    <button onclick="toggleAuthTab('signin')" id="tab-signin-btn" class="text-sm font-bold text-gold-400 pb-1 border-b-2 border-gold-400">Sign In</button>
+                    <button onclick="toggleAuthTab('signup')" id="tab-signup-btn" class="text-sm font-bold text-gray-400 pb-1 hover:text-white">Sign Up</button>
+                </div>
+
+                <!-- Sign In Form -->
+                <form id="form-signin" onsubmit="handleAuthSubmit(event, 'signin')" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Email Address</label>
+                        <input type="email" required placeholder="you@example.com" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Password</label>
+                        <input type="password" required placeholder="••••••••" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-xs text-white">
+                    </div>
+                    <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-black font-extrabold py-3 rounded-xl text-xs transition">
+                        Sign In To Account
+                    </button>
+                </form>
+
+                <!-- Sign Up Form -->
+                <form id="form-signup" onsubmit="handleAuthSubmit(event, 'signup')" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Full Name</label>
+                        <input type="text" id="signup-name" required placeholder="John Doe" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Email Address</label>
+                        <input type="email" id="signup-email" required placeholder="you@example.com" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Password</label>
+                        <input type="password" required placeholder="••••••••" class="w-full bg-brand-bg border border-brand-border rounded-xl p-2.5 text-xs text-white">
+                    </div>
+                    <button type="submit" class="w-full bg-gold-500 hover:bg-gold-400 text-black font-extrabold py-3 rounded-xl text-xs transition">
+                        Create Account
+                    </button>
+                </form>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FLOATING LIVE CHAT SUPPORT WIDGET -->
+    <div class="fixed bottom-5 right-5 z-50">
+        <div id="chat-window" class="hidden mb-3 w-80 bg-brand-card border border-brand-border rounded-2xl shadow-2xl overflow-hidden flex flex-col h-96">
+            <div class="bg-brand-bg p-3 border-b border-brand-border flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-500 animate-pulse"></span>
+                    <span class="font-bold text-xs text-white">Forex Gold Support</span>
+                </div>
+                <button onclick="toggleChat()" class="text-gray-400 hover:text-white">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-2 text-xs">
+                <div class="bg-brand-hover p-2.5 rounded-xl text-gray-300 max-w-[85%]">
+                    Hello! Welcome to Forex Gold Trade support. How can we help you today?
+                </div>
+            </div>
+            <form onsubmit="sendChatMessage(event)" class="p-2 bg-brand-bg border-t border-brand-border flex gap-2">
+                <input type="text" id="chat-input" placeholder="Type a message..." class="flex-1 bg-brand-card border border-brand-border rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none">
+                <button type="submit" class="bg-gold-500 text-black font-bold px-3 py-1.5 rounded-xl text-xs">Send</button>
+            </form>
+        </div>
+
+        <button onclick="toggleChat()" class="w-12 h-12 rounded-full bg-gold-500 hover:bg-gold-400 text-black flex items-center justify-center shadow-xl transition relative">
+            <i data-lucide="message-square" class="w-6 h-6"></i>
+            <span class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-brand-500 border-2 border-brand-bg"></span>
+        </button>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-card border-t border-brand-border py-6 px-4 mt-12 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto space-y-2">
+            <p>© 2026 Forex Gold Trade Exchange. Full Master Admin Console & Persistent Storage Engine Enabled.</p>
+        </div>
+    </footer>
+
+    <!-- APP ENGINE AND PERSISTENCE JAVASCRIPT -->
+    <script>
+        // Initial Default Users State
+        const DEFAULT_USERS = [
+            {
+                id: 'usr_default_1',
+                name: 'Main Trader',
+                email: 'trader@forexgold.com',
+                balance: 10000.00,
+                goldHolding: 50.00,
+                profitLoss: 1250.00,
+                kycStatus: 'Verified',
+                transactions: [
+                    { type: 'Deposit', amount: 10000, asset: 'USDT', status: 'Completed', date: '2026-10-20' }
+                ]
+            },
+            {
+                id: 'usr_default_2',
+                name: 'John Doe',
+                email: 'john@example.com',
+                balance: 25000.00,
+                goldHolding: 120.50,
+                profitLoss: -350.00,
+                kycStatus: 'Pending',
+                transactions: [
+                    { type: 'Deposit', amount: 25000, asset: 'BTC', status: 'Completed', date: '2026-10-18' }
+                ]
+            }
+        ];
+
+        // State variables
+        let appUsers = JSON.parse(localStorage.getItem('fgt_master_users')) || DEFAULT_USERS;
+        let activeUserId = localStorage.getItem('fgt_master_active_id') || 'usr_default_1';
+
+        // Persistence Helper
+        function saveState() {
+            localStorage.setItem('fgt_master_users', JSON.stringify(appUsers));
+            localStorage.setItem('fgt_master_active_id', activeUserId);
+            syncUI();
+        }
+
+        // Active User Getter
+        function getActiveUser() {
+            return appUsers.find(u => u.id === activeUserId) || appUsers[0];
+        }
+
+        // Initialization
+        window.onload = function() {
+            lucide.createIcons();
+            syncUI();
+        };
+
+        // Navigation Drawer
+        function toggleMenu() {
+            document.getElementById('side-drawer').classList.toggle('hidden');
+        }
+
+        function navClick(viewId) {
+            toggleMenu();
+            switchView(viewId);
+        }
+
+        // Master View Toggle
+        function toggleMasterMode() {
+            const currentIsAdmin = !document.getElementById('view-admin').classList.contains('hidden');
+            if (currentIsAdmin) {
+                switchView('dashboard');
+                showToast('Switched to User Platform View');
+            } else {
+                switchView('admin');
+                showToast('Switched to Master Admin Console View');
+            }
+        }
+
+        // View Navigator
+        function switchView(viewId) {
+            const views = ['dashboard', 'admin', 'trade', 'wallet', 'bots', 'kyc', 'auth'];
+            views.forEach(v => {
+                const el = document.getElementById('view-' + v);
+                if (el) el.classList.add('hidden');
+            });
+
+            const target = document.getElementById('view-' + viewId);
+            if (target) target.classList.remove('hidden');
+
+            const label = document.getElementById('master-mode-label');
+            if (viewId === 'admin') {
+                label.innerText = 'Switch to User Platform';
+            } else {
+                label.innerText = 'Switch to Master Admin Panel';
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Global UI Sync
+        function syncUI() {
+            const user = getActiveUser();
+
+            // 1. User Dashboard & Nav Sync
+            document.getElementById('dash-user-name').innerText = user.name;
+            document.getElementById('active-user-display').innerText = `Logged in: ${user.name} (${user.email})`;
+            document.getElementById('dash-total-balance').innerText = '$' + user.balance.toLocaleString('en-US', { minimumFractionDigits: 2 });
+            document.getElementById('nav-user-balance').innerText = '$' + user.balance.toLocaleString('en-US', { minimumFractionDigits: 2 });
+            document.getElementById('drawer-balance-display').innerText = '$' + user.balance.toLocaleString('en-US', { minimumFractionDigits: 2 });
+            document.getElementById('dash-gold-balance').innerText = user.goldHolding.toFixed(2) + ' Oz';
+
+            const profitEl = document.getElementById('dash-profit-loss');
+            if (user.profitLoss >= 0) {
+                profitEl.innerText = '+$' + user.profitLoss.toLocaleString('en-US', { minimumFractionDigits: 2 });
+                profitEl.className = 'text-2xl font-bold text-emerald-400 tracking-tight';
+            } else {
+                profitEl.innerText = '-$' + Math.abs(user.profitLoss).toLocaleString('en-US', { minimumFractionDigits: 2 });
+                profitEl.className = 'text-2xl font-bold text-red-500 tracking-tight';
+            }
+
+            const kycBadge = document.getElementById('dash-kyc-badge');
+            const kycStatusText = document.getElementById('user-kyc-status-text');
+            if (user.kycStatus === 'Verified') {
+                kycBadge.innerText = 'KYC Verified';
+                kycBadge.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                if(kycStatusText) kycStatusText.className = 'font-bold text-emerald-400';
+            } else {
+                kycBadge.innerText = 'KYC Pending';
+                kycBadge.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-amber-500/20 text-amber-400 border border-amber-500/30';
+                if(kycStatusText) kycStatusText.className = 'font-bold text-amber-400';
+            }
+            if(kycStatusText) kycStatusText.innerText = user.kycStatus;
+
+            // 2. Admin Selector Populate
+            const adminSelect = document.getElementById('admin-user-select');
+            adminSelect.innerHTML = appUsers.map(u => `
+                <option value="${u.id}" ${u.id === activeUserId ? 'selected' : ''}>
+                    ${u.name} (${u.email})
+                </option>
+            `).join('');
+
+            loadSelectedUserToAdminForm();
+
+            // 3. Admin User Table
+            const tbody = document.getElementById('admin-users-tbody');
+            tbody.innerHTML = appUsers.map(u => `
+                <tr class="hover:bg-brand-hover/50 transition">
+                    <td class="p-3 font-semibold text-white">
+                        ${u.name}
+                        <div class="text-[10px] text-gray-500 font-normal">${u.email}</div>
+                    </td>
+                    <td class="p-3 font-bold text-gold-400">$${u.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                    <td class="p-3 text-amber-300">${u.goldHolding} Oz</td>
+                    <td class="p-3 ${u.profitLoss >= 0 ? 'text-emerald-400' : 'text-red-400'} font-bold">
+                        ${u.profitLoss >= 0 ? '+' : ''}$${u.profitLoss.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    </td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.kycStatus === 'Verified' ? 'bg-emerald-950 text-emerald-400' : 'bg-amber-950 text-amber-400'}">
+                            ${u.kycStatus}
+                        </span>
+                    </td>
+                    <td class="p-3 text-right space-x-2">
+                        <button onclick="setActiveUser('${u.id}')" class="px-2.5 py-1 bg-gold-500/20 text-gold-400 hover:bg-gold-500 hover:text-black font-bold rounded transition">
+                            Select Profile
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // 4. Admin KYC Queue
+            const kycQueue = document.getElementById('admin-kyc-queue');
+            kycQueue.innerHTML = appUsers.map(u => `
+                <div class="bg-brand-bg p-3 rounded-xl border border-brand-border flex items-center justify-between text-xs">
+                    <div>
+                        <div class="font-bold text-white">${u.name}</div>
+                        <div class="text-[10px] text-gray-400">${u.email} • ID Attached</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="adminSetKYC('${u.id}', 'Verified')" class="px-2.5 py-1 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded font-bold transition">
+                            Approve
+                        </button>
+                        <button onclick="adminSetKYC('${u.id}', 'Rejected')" class="px-2.5 py-1 bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white rounded font-bold transition">
+                            Reject
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            // 5. User Transaction History Table
+            const txTbody = document.getElementById('tx-history-tbody');
+            if (user.transactions && user.transactions.length > 0) {
+                txTbody.innerHTML = user.transactions.map(t => `
+                    <tr>
+                        <td class="p-3 font-bold ${t.type === 'Deposit' ? 'text-brand-500' : 'text-red-400'}">${t.type}</td>
+                        <td class="p-3 font-bold text-white">$${t.amount.toLocaleString()}</td>
+                        <td class="p-3 text-gray-400">${t.asset}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-950 text-emerald-400 font-bold">${t.status}</span></td>
+                        <td class="p-3 text-gray-500">${t.date}</td>
+                    </tr>
+                `).join('');
+            } else {
+                txTbody.innerHTML = '<tr><td colspan="5" class="p-3 text-center text-gray-500">No transactions recorded.</td></tr>';
+            }
+        }
+
+        // Load Selected User in Admin Form
+        function loadSelectedUserToAdminForm() {
+            const selectedId = document.getElementById('admin-user-select').value;
+            const target = appUsers.find(u => u.id === selectedId);
+            if (target) {
+                document.getElementById('admin-input-balance').value = target.balance;
+                document.getElementById('admin-input-gold').value = target.goldHolding;
+                document.getElementById('admin-input-profit').value = target.profitLoss;
+            }
+        }
+
+        // Admin Balance Updates
+        function handleAdminBalanceUpdate(e) {
+            e.preventDefault();
+            const selectedId = document.getElementById('admin-user-select').value;
+            const target = appUsers.find(u => u.id === selectedId);
+            if (target) {
+                target.balance = parseFloat(document.getElementById('admin-input-balance').value) || 0;
+                target.goldHolding = parseFloat(document.getElementById('admin-input-gold').value) || 0;
+                target.profitLoss = parseFloat(document.getElementById('admin-input-profit').value) || 0;
+                saveState();
+                showToast(`Live updates saved for ${target.name}!`);
+            }
+        }
+
+        function quickAddBalance(amount) {
+            const selectedId = document.getElementById('admin-user-select').value;
+            const target = appUsers.find(u => u.id === selectedId);
+            if (target) {
+                target.balance += amount;
+                saveState();
+                showToast(`Added +$${amount.toLocaleString()} to ${target.name}`);
+            }
+        }
+
+        // KYC Actions
+        function adminSetKYC(userId, status) {
+            const target = appUsers.find(u => u.id === userId);
+            if (target) {
+                target.kycStatus = status;
+                saveState();
+                showToast(`KYC status for ${target.name} set to ${status}`);
+            }
+        }
+
+        function submitUserKYC() {
+            const user = getActiveUser();
+            user.kycStatus = 'Pending Approval';
+            saveState();
+            showToast('KYC Documents submitted for approval!');
+        }
+
+        // Active Profile Switch
+        function setActiveUser(userId) {
+            activeUserId = userId;
+            saveState();
+            showToast(`Active profile switched to ${getActiveUser().name}`);
+        }
+
+        // Add User
+        function addNewUserPrompt() {
+            const name = prompt('New User Full Name:');
+            const email = prompt('New User Email:');
+            if (name && email) {
+                const newUser = {
+                    id: 'usr_' + Date.now(),
+                    name: name,
+                    email: email,
+                    balance: 1000.00,
+                    goldHolding: 0,
+                    profitLoss: 0,
+                    kycStatus: 'Pending',
+                    transactions: []
+                };
+                appUsers.push(newUser);
+                activeUserId = newUser.id;
+                saveState();
+                showToast(`New account registered for ${name}`);
+            }
+        }
+
+        // User Deposit Submission
+        function submitUserDeposit() {
+            const amt = parseFloat(document.getElementById('deposit-amount').value);
+            const asset = document.getElementById('deposit-asset').value;
+            if (amt && amt > 0) {
+                const user = getActiveUser();
+                user.balance += amt;
+                if (!user.transactions) user.transactions = [];
+                user.transactions.unshift({
+                    type: 'Deposit',
+                    amount: amt,
+                    asset: asset,
+                    status: 'Completed',
+                    date: new Date().toISOString().split('T')[0]
+                });
+                saveState();
+                showToast(`Deposit of $${amt.toLocaleString()} confirmed!`);
+                document.getElementById('deposit-amount').value = '';
+            }
+        }
+
+        // User Withdrawal Submission
+        function submitUserWithdrawal() {
+            const amt = parseFloat(document.getElementById('withdraw-amount').value);
+            const user = getActiveUser();
+            if (amt && amt > 0) {
+                if (user.balance >= amt) {
+                    user.balance -= amt;
+                    if (!user.transactions) user.transactions = [];
+                    user.transactions.unshift({
+                        type: 'Withdrawal',
+                        amount: amt,
+                        asset: 'USD',
+                        status: 'Completed',
+                        date: new Date().toISOString().split('T')[0]
+                    });
+                    saveState();
+                    showToast(`Withdrawal request for $${amt.toLocaleString()} processed!`);
+                    document.getElementById('withdraw-amount').value = '';
+                } else {
+                    showToast('Error: Insufficient wallet balance!');
+                }
+            }
+        }
+
+        // Trade Execution Simulation
+        function executeTrade(type) {
+            const user = getActiveUser();
+            const delta = type === 'BUY' ? 250 : -100;
+            user.balance += delta;
+            user.profitLoss += delta;
+            saveState();
+            showToast(`Trade ${type} XAU/USD completed ($${delta >= 0 ? '+' : ''}${delta})`);
+        }
+
+        // Bot Controls
+        function handleBotConfig(e) {
+            e.preventDefault();
+            showToast('Algorithmic Trading Bot Started!');
+            addBotLog('[SYSTEM] Algo Bot Started on XAU/USD. Executing rules...');
+        }
+
+        function stopUserBot() {
+            showToast('Algorithmic Trading Bot Stopped.');
+            addBotLog('[SYSTEM] Bot stopped manually.');
+        }
+
+        function submitPasskey() {
+            showToast('VIP Passkey Verified! Pro Bot Unlocked.');
+            addBotLog('[VIP] Passkey accepted. Pro Market Scanner Active.');
+        }
+
+        function addBotLog(text) {
+            const terminal = document.getElementById('bot-log-terminal');
+            if (terminal) {
+                const div = document.createElement('div');
+                div.innerText = text;
+                terminal.appendChild(div);
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+        }
+
+        function updateBotSignals() {
+            const signal = document.getElementById('admin-signal-select').value;
+            const winrate = document.getElementById('admin-winrate-input').value;
+            document.getElementById('dash-bot-status').innerText = `ACTIVE (${winrate}% Win)`;
+            showToast(`Injected global signal ${signal} (${winrate}% win rate)`);
+        }
+
+        // Save Global Settings
+        function savePlatformSettings() {
+            const bannerText = document.getElementById('admin-announcement-input').value;
+            document.getElementById('announcement-text').innerText = bannerText;
+            const usdt = document.getElementById('admin-usdt-addr').value;
+            document.getElementById('wallet-dep-addr').innerText = usdt;
+            showToast('Global settings updated successfully!');
+        }
+
+        // Auth Tabs Toggle & Handlers
+        function toggleAuthTab(tab) {
+            if (tab === 'signin') {
+                document.getElementById('form-signin').classList.remove('hidden');
+                document.getElementById('form-signup').classList.add('hidden');
+                document.getElementById('tab-signin-btn').className = 'text-sm font-bold text-gold-400 pb-1 border-b-2 border-gold-400';
+                document.getElementById('tab-signup-btn').className = 'text-sm font-bold text-gray-400 pb-1 hover:text-white';
+            } else {
+                document.getElementById('form-signin').classList.add('hidden');
+                document.getElementById('form-signup').classList.remove('hidden');
+                document.getElementById('tab-signup-btn').className = 'text-sm font-bold text-gold-400 pb-1 border-b-2 border-gold-400';
+                document.getElementById('tab-signin-btn').className = 'text-sm font-bold text-gray-400 pb-1 hover:text-white';
+            }
+        }
+
+        function handleAuthSubmit(e, type) {
+            e.preventDefault();
+            if (type === 'signup') {
+                const name = document.getElementById('signup-name').value;
+                const email = document.getElementById('signup-email').value;
+                const newUser = {
+                    id: 'usr_' + Date.now(),
+                    name: name,
+                    email: email,
+                    balance: 5000.00,
+                    goldHolding: 0,
+                    profitLoss: 0,
+                    kycStatus: 'Pending',
+                    transactions: []
+                };
+                appUsers.push(newUser);
+                activeUserId = newUser.id;
+                saveState();
+                showToast(`Welcome ${name}! Account created.`);
+            } else {
+                showToast('Signed in successfully!');
+            }
+            switchView('dashboard');
+        }
+
+        // Chat Support Widget
+        function toggleChat() {
+            document.getElementById('chat-window').classList.toggle('hidden');
+        }
+
+        function sendChatMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const msg = input.value.trim();
+            if (msg) {
+                const box = document.getElementById('chat-messages');
+                const userMsg = document.createElement('div');
+                userMsg.className = 'bg-gold-500 text-black p-2.5 rounded-xl ml-auto max-w-[85%] font-medium';
+                userMsg.innerText = msg;
+                box.appendChild(userMsg);
+                input.value = '';
+
+                setTimeout(() => {
+                    const botMsg = document.createElement('div');
+                    botMsg.className = 'bg-brand-hover p-2.5 rounded-xl text-gray-300 max-w-[85%]';
+                    botMsg.innerText = 'Thank you for contacting Forex Gold Trade. An admin agent is reviewing your query.';
+                    box.appendChild(botMsg);
+                    box.scrollTop = box.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        // System Reset Helper
+        function resetDataToDefault() {
+            if (confirm('Reset system state back to default users?')) {
+                localStorage.removeItem('fgt_master_users');
+                localStorage.removeItem('fgt_master_active_id');
+                appUsers = DEFAULT_USERS;
+                activeUserId = 'usr_default_1';
+                saveState();
+                showToast('Platform reset to default settings.');
+            }
+        }
+
+        // Toast Helper
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-brand-card border border-gold-500/50 text-white px-4 py-3 rounded-xl shadow-2xl text-xs flex items-center space-x-2 pointer-events-auto transform transition duration-300 translate-y-0 opacity-100';
+            toast.innerHTML = `
+                <i data-lucide="check-circle" class="w-4 h-4 text-gold-400"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
+```
